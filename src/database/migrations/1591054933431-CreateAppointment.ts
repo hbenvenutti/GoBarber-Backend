@@ -9,19 +9,19 @@ export default class CreateAppointment1591054933431
         columns: [
           {
             name: 'id',
-            type: 'varchar', // Varchar because it is an uuid;
+            type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()',
           },
           {
             name: 'provider',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: false,
           },
           {
             name: 'date',
-            type: 'timestamp with time zone', // timestamp if not using postgres
+            type: 'timestamp with time zone', // timestamp if not postgres
             isNullable: false,
           },
           {

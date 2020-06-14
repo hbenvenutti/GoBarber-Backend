@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 import User from '../models/User';
 
@@ -10,6 +11,7 @@ interface RequestDTO {
 
 interface ResponseDTO {
   user: User;
+  token: string;
 }
 
 class CreateSessionService {
@@ -28,7 +30,12 @@ class CreateSessionService {
       throw new Error('Password does not match');
     }
 
-    return { user };
+    const token = sign({}, '0491518944a4f072bfff2cdaf89eb460', {
+      subject: user.id,
+      expiresIn: '1d',
+    });
+
+    return { user, token };
   }
 }
 

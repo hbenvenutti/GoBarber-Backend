@@ -106,3 +106,10 @@ dist
 
 # VSCode
 .vscode
+
+#Temporary
+tmp/*
+!tmp/.gitkeep
+
+#JS Build
+dist/

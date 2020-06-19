@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { getRepository } from 'typeorm';
 
-import { request } from 'express';
 import User from '../models/User';
 import uploadConfig from '../config/upload';
 

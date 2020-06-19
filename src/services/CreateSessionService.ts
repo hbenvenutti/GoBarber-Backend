@@ -3,6 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import User from '../models/User';
+import AppError from '../errors/AppError';
 import authConfig from '../config/auth';
 
 interface RequestDTO {
@@ -22,13 +23,13 @@ class CreateSessionService {
     const user = await usersRepository.findOne({ where: { email } });
 
     if (!user) {
-      throw new Error('User does not exist');
+      throw new AppError('User does not exist', 401);
     }
 
     const passwordMatch = compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error('Password does not match');
+      throw new AppError('Password does not match', 401);
     }
 
     const { expiresIn, secret } = authConfig.jwt;

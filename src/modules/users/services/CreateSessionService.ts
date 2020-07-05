@@ -1,4 +1,3 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
@@ -6,6 +5,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequestDTO {
   email: string;
@@ -22,6 +22,9 @@ class CreateSessionService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -34,7 +37,10 @@ class CreateSessionService {
       throw new AppError('User does not exist', 401);
     }
 
-    const passwordMatch = compare(password, user.password);
+    const passwordMatch = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
     if (!passwordMatch) {
       throw new AppError('Password does not match', 401);

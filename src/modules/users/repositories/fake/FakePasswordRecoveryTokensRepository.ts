@@ -19,6 +19,16 @@ class FakePasswordRecoveryTokensRepository
 
     return passwordRecoveryToken;
   }
+
+  public async findByToken(
+    token: string,
+  ): Promise<PasswordRecoveryToken | undefined> {
+    const passwordRecoveryToken = this.passwordRecoveryTokens.find(
+      recoveryToken => recoveryToken.token === token,
+    );
+
+    return passwordRecoveryToken;
+  }
 }
 
 export default FakePasswordRecoveryTokensRepository;
